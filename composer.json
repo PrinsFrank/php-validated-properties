@@ -1,0 +1,12 @@
+{
+    "name": "fprins/php-strict-models",
+    "description": "Strict models for PHP",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Fprins\\PhpStrictModels\\": "src/"
+        }
+    },
+    "require": {}
+}
