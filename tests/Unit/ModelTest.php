@@ -58,6 +58,7 @@ class ModelTest extends TestCase
 
         $this->expectException(NonExistingPropertyException::class);
         $this->expectExceptionMessage('Property with name "foo" does not exist');
+        /** @phpstan-ignore-next-line */
         $model->foo = 42;
     }
 
@@ -72,7 +73,7 @@ class ModelTest extends TestCase
 
         $this->expectException(TypeException::class);
         $this->expectExceptionMessage('Type of property with name "foo" is set to "int", "string" given');
-        /** @noinspection PhpStrictTypeCheckingInspection */
+        /** @noinspection PhpStrictTypeCheckingInspection @phpstan-ignore-next-line */
         $model->foo = 'bar';
     }
 
