@@ -13,11 +13,10 @@ use Reflection;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
-use RuntimeException;
 
 abstract class Model
 {
-    protected ModelStrictness $strictness = ModelStrictness::STRICT;
+    protected const STRICTNESS = ModelStrictness::STRICT;
 
     /**
      * @throws VisibilityException
@@ -39,7 +38,7 @@ abstract class Model
 
     public function __isset(string $name): bool
     {
-        return property_exists(static::class, $name) && property_exists($this, $name);
+        return property_exists($this, $name);
     }
 
     /**
@@ -55,16 +54,15 @@ abstract class Model
 
         $valueType = gettype($value);
         $propertyType = (new ReflectionClass(static::class))->getProperty($name)->getType();
-        if ($valueType === Types::INT->value && $propertyType === Types::FLOAT->value && $this->strictness !== ModelStrictness::STRICT) {
+        if ($valueType === Types::INT->value && $propertyType === Types::FLOAT->value && static::STRICTNESS !== ModelStrictness::STRICT) {
             settype($value, Types::FLOAT->value);
             // todo: double/float
             $valueType = gettype($value);
         }
 
         // Todo lossless type conversion
-
         if ($propertyType !== $valueType) {
-            if ($this->strictness === ModelStrictness::LAX) {
+            if (static::STRICTNESS === ModelStrictness::LAX) {
                 $this->{$name} = null;
 
                 return; // ignore the value and simply don't set it.
@@ -78,10 +76,6 @@ abstract class Model
 
     public function __get(string $name)
     {
-        if (property_exists($this, $name)) {
-            throw new RuntimeException('Property with name "' . $name . '" is an internal property');
-        }
-
         return $this->{$name};
     }
 }
