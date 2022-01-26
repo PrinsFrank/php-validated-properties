@@ -17,7 +17,7 @@ class ModelPropertiesReflectionExtension implements PropertiesClassReflectionExt
             return false;
         }
 
-        return $propertyName === 'foo' && $classReflection->hasNativeProperty($propertyName);
+        return $classReflection->hasNativeProperty($propertyName);
     }
 
     /**
