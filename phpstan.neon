@@ -1,0 +1,10 @@
+parameters:
+    level: 9
+    paths:
+        - src
+        - tests
+services:
+    -
+        class: PrinsFrank\PhpStrictModels\Development\PHPStan\ModelPropertiesReflectionExtension
+        tags:
+            - phpstan.broker.propertiesClassReflectionExtension

@@ -36,7 +36,7 @@ class ModelTest extends TestCase
         new class extends Model {
             public int $foo;
             public string $bar;
-            protected array $baz;
+            protected float $baz;
         };
     }
 
@@ -72,6 +72,20 @@ class ModelTest extends TestCase
 
         $this->expectException(TypeException::class);
         $this->expectExceptionMessage('Type of property with name "foo" is set to "int", "string" given');
+        /** @noinspection PhpStrictTypeCheckingInspection */
         $model->foo = 'bar';
+    }
+
+    /**
+     * @covers ::__set
+     * @covers ::__get
+     */
+    public function testCorrectSettingAndGetting(): void
+    {
+        $model = new class extends Model {
+            protected int $foo;
+        };
+        $model->foo = 42;
+        static::assertSame(42, $model->foo);
     }
 }

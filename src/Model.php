@@ -74,7 +74,7 @@ abstract class Model
         $this->{$name} = $value;
     }
 
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         return $this->{$name};
     }
