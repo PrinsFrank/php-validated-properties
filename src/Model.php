@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace PrinsFrank\PhpStrictModels;
 
 use PrinsFrank\PhpStrictModels\Enum\ModelStrictness;
-use PrinsFrank\PhpStrictModels\Enum\Types;
+use PrinsFrank\PhpStrictModels\Enum\Type;
 use PrinsFrank\PhpStrictModels\Enum\Visibility;
 use PrinsFrank\PhpStrictModels\Exception\NonExistingPropertyException;
 use PrinsFrank\PhpStrictModels\Exception\TypeException;
@@ -52,10 +52,10 @@ abstract class Model
             throw new NonExistingPropertyException('Property with name "' . $name . '" does not exist');
         }
 
-        $valueType = gettype($value);
-        $propertyType = (new ReflectionClass(static::class))->getProperty($name)->getType();
-        if ($valueType === Types::INT->value && $propertyType === Types::FLOAT->value && static::STRICTNESS !== ModelStrictness::STRICT) {
-            settype($value, Types::FLOAT->value);
+        $valueType = Type::from(gettype($value))->name;
+        $propertyType = (string) (new ReflectionClass(static::class))->getProperty($name)->getType();
+        if (($valueType === Type::int->value) && ($propertyType === Type::float->value) && (static::STRICTNESS !== ModelStrictness::STRICT)) {
+            settype($value, Type::float->value);
             // todo: double/float
             $valueType = gettype($value);
         }
