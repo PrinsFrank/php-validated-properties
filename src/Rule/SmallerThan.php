@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace PrinsFrank\PhpStrictModels\Rule;
 
+use Attribute;
 use PrinsFrank\PhpStrictModels\Enum\Type;
 
+#[Attribute]
 class SmallerThan implements Rule
 {
     public function __construct(private float|int $smallerThan){}
