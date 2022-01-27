@@ -3,8 +3,5 @@ parameters:
     paths:
         - src
         - tests
-services:
-    -
-        class: PrinsFrank\PhpStrictModels\Development\PHPStan\ModelPropertiesReflectionExtension
-        tags:
-            - phpstan.broker.propertiesClassReflectionExtension
+includes:
+    - development/PHPStan/extension.neon

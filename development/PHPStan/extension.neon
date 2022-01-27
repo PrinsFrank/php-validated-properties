@@ -1,0 +1,5 @@
+services:
+    -
+        class: PrinsFrank\PhpStrictModels\Development\PHPStan\ModelPropertiesReflectionExtension
+        tags:
+            - phpstan.broker.propertiesClassReflectionExtension
