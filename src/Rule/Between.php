@@ -29,4 +29,9 @@ class Between implements Rule
 
         return $value >= $this->largerThanOrEquals && $value <= $this->smallerThanOrEquals;
     }
+
+    public function getMessage(): string
+    {
+        return 'Should be between ' . $this->largerThanOrEquals . ' and ' . $this->smallerThanOrEquals . '';
+    }
 }

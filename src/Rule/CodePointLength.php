@@ -24,4 +24,9 @@ class CodePointLength implements Rule
     {
         return strlen($value) === $this->length;
     }
+
+    public function getMessage(): string
+    {
+        return 'Should have a code point length of exactly ' . $this->length;
+    }
 }

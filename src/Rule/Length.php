@@ -24,4 +24,9 @@ class Length implements Rule
     {
         return mb_strlen($value) === $this->length;
     }
+
+    public function getMessage(): string
+    {
+        return 'Should have a length of exactly ' . $this->length;
+    }
 }

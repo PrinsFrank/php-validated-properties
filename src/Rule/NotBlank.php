@@ -20,4 +20,9 @@ class NotBlank implements Rule
     {
         return $value !== '';
     }
+
+    public function getMessage(): string
+    {
+        return 'Should not be blank';
+    }
 }

@@ -9,7 +9,7 @@ use PrinsFrank\PhpStrictModels\Enum\Type;
 #[Attribute]
 class BetweenExclusive implements Rule
 {
-    public function __construct(private float|int $largerThanOrEquals, private float|int $smallerThanOrEquals){}
+    public function __construct(private float|int $largerThan, private float|int $smallerThan){}
 
     public function applicableToTypes(): array
     {
@@ -24,9 +24,14 @@ class BetweenExclusive implements Rule
         if (is_array($value)) {
             $nrOfItemsInArray = count($value);
 
-            return $nrOfItemsInArray > $this->largerThanOrEquals && $nrOfItemsInArray < $this->smallerThanOrEquals;
+            return $nrOfItemsInArray > $this->largerThan && $nrOfItemsInArray < $this->smallerThan;
         }
 
-        return $value > $this->largerThanOrEquals && $value < $this->smallerThanOrEquals;
+        return $value > $this->largerThan && $value < $this->smallerThan;
+    }
+
+    public function getMessage(): string
+    {
+        return 'Should be larger than ' . $this->largerThan . ' and smaller than ' . $this->smallerThan . '';
     }
 }

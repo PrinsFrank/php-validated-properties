@@ -29,4 +29,9 @@ class LargerThanOrEquals implements Rule
 
         return $value >= $this->largerThanOrEquals;
     }
+
+    public function getMessage(): string
+    {
+        return 'Should be larger than or equal to' . $this->largerThanOrEquals;
+    }
 }

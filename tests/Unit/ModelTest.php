@@ -5,9 +5,11 @@ namespace PrinsFrank\PhpStrictModels\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use PrinsFrank\PhpStrictModels\Exception\TypeException;
+use PrinsFrank\PhpStrictModels\Exception\ValidationFailedException;
 use PrinsFrank\PhpStrictModels\Exception\VisibilityException;
 use PrinsFrank\PhpStrictModels\Model;
 use PrinsFrank\PhpStrictModels\Exception\NonExistingPropertyException;
+use PrinsFrank\PhpStrictModels\Rule\Between;
 
 /**
  * @coversDefaultClass \PrinsFrank\PhpStrictModels\Model
@@ -90,5 +92,19 @@ class ModelTest extends TestCase
         };
         $model->foo = 42;
         static::assertSame(42, $model->foo);
+    }
+
+    /**
+     * @covers ::__set
+     */
+    public function testValidatesRuleForProperty(): void
+    {
+        $model = new class extends Model {
+            #[Between(41, 44)]
+            protected int $foo;
+        };
+        $this->expectException(ValidationFailedException::class);
+        $this->expectExceptionMessage('Value "0" for property "foo" is invalid: "Should be between 41 and 44"');
+        $model->foo = 0;
     }
 }

@@ -29,4 +29,9 @@ class SmallerThan implements Rule
 
         return $value < $this->smallerThan;
     }
+
+    public function getMessage(): string
+    {
+        return 'Should be smaller than ' . $this->smallerThan;
+    }
 }

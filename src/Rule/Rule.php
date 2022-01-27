@@ -11,4 +11,6 @@ interface Rule
     public function applicableToTypes(): array;
 
     public function isValid(mixed $value): bool;
+
+    public function getMessage(): string;
 }

@@ -8,7 +8,9 @@ use PrinsFrank\PhpStrictModels\Enum\Type;
 use PrinsFrank\PhpStrictModels\Enum\Visibility;
 use PrinsFrank\PhpStrictModels\Exception\NonExistingPropertyException;
 use PrinsFrank\PhpStrictModels\Exception\TypeException;
+use PrinsFrank\PhpStrictModels\Exception\ValidationFailedException;
 use PrinsFrank\PhpStrictModels\Exception\VisibilityException;
+use PrinsFrank\PhpStrictModels\Validation\RuleValidator;
 use Reflection;
 use ReflectionClass;
 use ReflectionException;
@@ -45,6 +47,7 @@ abstract class Model
      * @throws NonExistingPropertyException
      * @throws TypeException
      * @throws ReflectionException
+     * @throws ValidationFailedException
      */
     public function __set(string $name, mixed $value): void
     {
@@ -52,8 +55,10 @@ abstract class Model
             throw new NonExistingPropertyException('Property with name "' . $name . '" does not exist');
         }
 
+        $reflectionProperty = (new ReflectionClass(static::class))->getProperty($name);
+
         $valueType = Type::from(gettype($value))->name;
-        $propertyType = (string) (new ReflectionClass(static::class))->getProperty($name)->getType();
+        $propertyType = (string) $reflectionProperty->getType();
         if (($valueType === Type::int->value) && ($propertyType === Type::float->value) && (static::STRICTNESS !== ModelStrictness::STRICT)) {
             settype($value, Type::float->value);
             // todo: double/float
@@ -69,6 +74,11 @@ abstract class Model
             }
 
             throw new TypeException('Type of property with name "' . $name . '" is set to "' . $propertyType . '", "' . $valueType . '" given');
+        }
+
+        $validationResult = RuleValidator::validateProperty($reflectionProperty, $value);
+        if ($validationResult->passes() === false) {
+            throw new ValidationFailedException('Value "' . $value . '" for property "' . $name . '" is invalid: "' . implode('","', $validationResult->getErrors()) .  '"');
         }
 
         $this->{$name} = $value;

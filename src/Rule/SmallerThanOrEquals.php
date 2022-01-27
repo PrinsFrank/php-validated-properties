@@ -9,7 +9,7 @@ use PrinsFrank\PhpStrictModels\Enum\Type;
 #[Attribute]
 class SmallerThanOrEquals implements Rule
 {
-    public function __construct(private float|int $largerThanOrEquals){}
+    public function __construct(private float|int $smallerThanOrEquals){}
 
     public function applicableToTypes(): array
     {
@@ -24,9 +24,14 @@ class SmallerThanOrEquals implements Rule
         if (is_array($value)) {
             $nrOfItemsInArray = count($value);
 
-            return $nrOfItemsInArray <= $this->largerThanOrEquals;
+            return $nrOfItemsInArray <= $this->smallerThanOrEquals;
         }
 
-        return $value <= $this->largerThanOrEquals;
+        return $value <= $this->smallerThanOrEquals;
+    }
+
+    public function getMessage(): string
+    {
+        return 'Should be smaller than or equal to ' . $this->smallerThanOrEquals;
     }
 }

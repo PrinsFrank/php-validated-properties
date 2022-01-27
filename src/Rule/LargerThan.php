@@ -29,4 +29,9 @@ class LargerThan implements Rule
 
         return $value > $this->largerThan;
     }
+
+    public function getMessage(): string
+    {
+        return 'Should be larger than ' . $this->largerThan;
+    }
 }
