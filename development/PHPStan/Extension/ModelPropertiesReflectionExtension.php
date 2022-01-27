@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PrinsFrank\PhpStrictModels\Development\PHPStan;
+namespace PrinsFrank\PhpStrictModels\Development\PHPStan\Extension;
 
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MissingPropertyFromReflectionException;

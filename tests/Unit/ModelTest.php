@@ -21,6 +21,7 @@ class ModelTest extends TestCase
     {
         $this->expectException(VisibilityException::class);
         $this->expectExceptionMessage('Model should not have public properties, but has "foo"');
+        /** @phpstan-ignore-next-line */
         new class extends Model {
             public int $foo;
         };
@@ -33,6 +34,7 @@ class ModelTest extends TestCase
     {
         $this->expectException(VisibilityException::class);
         $this->expectExceptionMessage('Model should not have public properties, but has "foo,bar"');
+        /** @phpstan-ignore-next-line */
         new class extends Model {
             public int $foo;
             public string $bar;
