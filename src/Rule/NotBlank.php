@@ -15,7 +15,7 @@ class NotBlank implements Rule
         return [Type::string];
     }
 
-    /** @var string $value */
+    /** @param string $value */
     public function isValid(mixed $value): bool
     {
         return $value !== '';

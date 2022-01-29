@@ -17,6 +17,7 @@ class Pattern implements Rule
         return [Type::string];
     }
 
+    /** @param string $value */
     public function isValid(mixed $value): bool
     {
         return preg_match($this->pattern, $value) === 1;
