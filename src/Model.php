@@ -21,7 +21,7 @@ abstract class Model
     /**
      * @throws VisibilityException
      */
-    final public function __construct()
+    public function __construct()
     {
         $publicPropertyNames = array_map(
             static fn (ReflectionProperty $publicProperty) => $publicProperty->name,
