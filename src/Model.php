@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace PrinsFrank\PhpStrictModels;
 
-use PrinsFrank\PhpStrictModels\Enum\ModelStrictness;
 use PrinsFrank\PhpStrictModels\Exception\InvalidModelException;
 use PrinsFrank\PhpStrictModels\Exception\NonExistingPropertyException;
 use PrinsFrank\PhpStrictModels\Exception\ValidationFailedException;
@@ -14,8 +13,6 @@ use ReflectionException;
 
 abstract class Model
 {
-    protected const STRICTNESS = ModelStrictness::STRICT;
-
     /**
      * @throws InvalidModelException
      */
@@ -43,8 +40,7 @@ abstract class Model
             throw new NonExistingPropertyException('Property with name "' . $name . '" does not exist');
         }
 
-        $reflectionProperty = (new ReflectionClass(static::class))->getProperty($name);
-        $validationResult = RuleValidator::validateProperty($reflectionProperty, $value);
+        $validationResult = RuleValidator::validateProperty((new ReflectionClass(static::class))->getProperty($name), $value);
         if ($validationResult->passes() === false) {
             throw new ValidationFailedException('Value "' . $value . '" for property "' . $name . '" is invalid: "' . implode('","', $validationResult->getErrors()) .  '"');
         }
