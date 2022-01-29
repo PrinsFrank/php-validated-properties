@@ -4,35 +4,26 @@ declare(strict_types=1);
 namespace PrinsFrank\PhpStrictModels;
 
 use PrinsFrank\PhpStrictModels\Enum\ModelStrictness;
-use PrinsFrank\PhpStrictModels\Enum\Visibility;
+use PrinsFrank\PhpStrictModels\Exception\InvalidModelException;
 use PrinsFrank\PhpStrictModels\Exception\NonExistingPropertyException;
 use PrinsFrank\PhpStrictModels\Exception\ValidationFailedException;
-use PrinsFrank\PhpStrictModels\Exception\VisibilityException;
+use PrinsFrank\PhpStrictModels\Validation\ModelValidator;
 use PrinsFrank\PhpStrictModels\Validation\RuleValidator;
-use Reflection;
 use ReflectionClass;
 use ReflectionException;
-use ReflectionProperty;
 
 abstract class Model
 {
     protected const STRICTNESS = ModelStrictness::STRICT;
 
     /**
-     * @throws VisibilityException
+     * @throws InvalidModelException
      */
     public function __construct()
     {
-        $publicPropertyNames = array_map(
-            static fn (ReflectionProperty $publicProperty) => $publicProperty->name,
-            array_filter(
-                (new ReflectionClass(static::class))->getProperties(),
-                static fn (ReflectionProperty $reflectionProperty) => in_array(Visibility::PUBLIC->value, Reflection::getModifierNames($reflectionProperty->getModifiers()), true)
-            )
-        );
-
-        if (count($publicPropertyNames) !== 0) {
-            throw new VisibilityException('Model should not have public properties, but has "' . implode(',', $publicPropertyNames) . '"');
+        $validationResult = ModelValidator::validateModel(new ReflectionClass(static::class));
+        if ($validationResult->passes() === false) {
+            throw new InvalidModelException('Model is invalid: "' . implode('","', $validationResult->getErrors()) . '"');
         }
     }
 
