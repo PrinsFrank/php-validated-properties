@@ -14,4 +14,14 @@ class Email implements Rule
     {
         return [Type::string];
     }
+
+    public function isValid(mixed $value): bool
+    {
+        return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
+    }
+
+    public function getMessage(): string
+    {
+        return 'Should be a valid email address';
+    }
 }

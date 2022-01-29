@@ -14,4 +14,14 @@ class Url implements Rule
     {
         return [Type::string];
     }
+
+    public function isValid(mixed $value): bool
+    {
+        return filter_var($value, FILTER_VALIDATE_URL) !== false;
+    }
+
+    public function getMessage(): string
+    {
+        return 'Should be a valid URL';
+    }
 }
