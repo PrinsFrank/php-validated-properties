@@ -4,10 +4,8 @@ declare(strict_types=1);
 namespace PrinsFrank\PhpStrictModels;
 
 use PrinsFrank\PhpStrictModels\Enum\ModelStrictness;
-use PrinsFrank\PhpStrictModels\Enum\Type;
 use PrinsFrank\PhpStrictModels\Enum\Visibility;
 use PrinsFrank\PhpStrictModels\Exception\NonExistingPropertyException;
-use PrinsFrank\PhpStrictModels\Exception\TypeException;
 use PrinsFrank\PhpStrictModels\Exception\ValidationFailedException;
 use PrinsFrank\PhpStrictModels\Exception\VisibilityException;
 use PrinsFrank\PhpStrictModels\Validation\RuleValidator;
@@ -45,7 +43,6 @@ abstract class Model
 
     /**
      * @throws NonExistingPropertyException
-     * @throws TypeException
      * @throws ReflectionException
      * @throws ValidationFailedException
      */
@@ -56,26 +53,6 @@ abstract class Model
         }
 
         $reflectionProperty = (new ReflectionClass(static::class))->getProperty($name);
-
-        $valueType = Type::from(gettype($value))->name;
-        $propertyType = (string) $reflectionProperty->getType();
-        if (($valueType === Type::int->value) && ($propertyType === Type::float->value) && (static::STRICTNESS !== ModelStrictness::STRICT)) {
-            settype($value, Type::float->value);
-            // todo: double/float
-            $valueType = gettype($value);
-        }
-
-        // Todo lossless type conversion
-        if ($propertyType !== $valueType) {
-            if (static::STRICTNESS === ModelStrictness::LAX) {
-                $this->{$name} = null;
-
-                return; // ignore the value and simply don't set it.
-            }
-
-            throw new TypeException('Type of property with name "' . $name . '" is set to "' . $propertyType . '", "' . $valueType . '" given');
-        }
-
         $validationResult = RuleValidator::validateProperty($reflectionProperty, $value);
         if ($validationResult->passes() === false) {
             throw new ValidationFailedException('Value "' . $value . '" for property "' . $name . '" is invalid: "' . implode('","', $validationResult->getErrors()) .  '"');
