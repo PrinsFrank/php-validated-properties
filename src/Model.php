@@ -5,7 +5,7 @@ namespace PrinsFrank\PhpStrictModels;
 
 use PrinsFrank\PhpStrictModels\Exception\InvalidModelException;
 use PrinsFrank\PhpStrictModels\Exception\NonExistingPropertyException;
-use PrinsFrank\PhpStrictModels\Exception\ValidationFailedException;
+use PrinsFrank\PhpStrictModels\Exception\ValidationException;
 use PrinsFrank\PhpStrictModels\Validation\ModelValidator;
 use PrinsFrank\PhpStrictModels\Validation\RuleValidator;
 use ReflectionClass;
@@ -32,7 +32,7 @@ abstract class Model
     /**
      * @throws NonExistingPropertyException
      * @throws ReflectionException
-     * @throws ValidationFailedException
+     * @throws ValidationException
      */
     public function __set(string $name, mixed $value): void
     {
@@ -42,7 +42,7 @@ abstract class Model
 
         $validationResult = RuleValidator::validateProperty((new ReflectionClass(static::class))->getProperty($name), $value);
         if ($validationResult->passes() === false) {
-            throw new ValidationFailedException('Value "' . $value . '" for property "' . $name . '" is invalid: "' . implode('","', $validationResult->getErrors()) .  '"');
+            throw new ValidationException('Value "' . $value . '" for property "' . $name . '" is invalid: "' . implode('","', $validationResult->getErrors()) .  '"');
         }
 
         $this->{$name} = $value;

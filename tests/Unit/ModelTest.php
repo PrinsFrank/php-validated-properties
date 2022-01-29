@@ -5,7 +5,7 @@ namespace PrinsFrank\PhpStrictModels\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use PrinsFrank\PhpStrictModels\Exception\InvalidModelException;
-use PrinsFrank\PhpStrictModels\Exception\ValidationFailedException;
+use PrinsFrank\PhpStrictModels\Exception\ValidationException;
 use PrinsFrank\PhpStrictModels\Model;
 use PrinsFrank\PhpStrictModels\Exception\NonExistingPropertyException;
 use PrinsFrank\PhpStrictModels\Rule\Between;
@@ -103,7 +103,7 @@ class ModelTest extends TestCase
             #[Between(41, 44)]
             protected int $foo;
         };
-        $this->expectException(ValidationFailedException::class);
+        $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('Value "0" for property "foo" is invalid: "Should be between 41 and 44"');
         $model->foo = 0;
     }

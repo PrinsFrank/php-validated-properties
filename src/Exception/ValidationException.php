@@ -3,6 +3,6 @@ declare(strict_types=1);
 
 namespace PrinsFrank\PhpStrictModels\Exception;
 
-class ValidationFailedException extends Exception
+class ValidationException extends Exception
 {
 }
