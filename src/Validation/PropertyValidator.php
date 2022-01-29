@@ -6,7 +6,7 @@ namespace PrinsFrank\PhpStrictModels\Validation;
 use PrinsFrank\PhpStrictModels\Rule\Rule;
 use ReflectionProperty;
 
-class RuleValidator
+class PropertyValidator
 {
     public static function validateProperty(ReflectionProperty $reflectionProperty, mixed $value): ValidationResult
     {

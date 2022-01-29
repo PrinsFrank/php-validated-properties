@@ -7,7 +7,7 @@ use PrinsFrank\PhpStrictModels\Exception\InvalidModelException;
 use PrinsFrank\PhpStrictModels\Exception\NonExistingPropertyException;
 use PrinsFrank\PhpStrictModels\Exception\ValidationException;
 use PrinsFrank\PhpStrictModels\Validation\ModelValidator;
-use PrinsFrank\PhpStrictModels\Validation\RuleValidator;
+use PrinsFrank\PhpStrictModels\Validation\PropertyValidator;
 use ReflectionClass;
 use ReflectionException;
 
@@ -40,7 +40,7 @@ trait WithValidatedProperties
             throw new NonExistingPropertyException('Property with name "' . $name . '" does not exist');
         }
 
-        $validationResult = RuleValidator::validateProperty((new ReflectionClass(static::class))->getProperty($name), $value);
+        $validationResult = PropertyValidator::validateProperty((new ReflectionClass(static::class))->getProperty($name), $value);
         if ($validationResult->passes() === false) {
             throw new ValidationException('Value "' . $value . '" for property "' . $name . '" is invalid: "' . implode('","', $validationResult->getErrors()) .  '"');
         }
