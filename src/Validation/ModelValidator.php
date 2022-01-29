@@ -4,12 +4,16 @@ declare(strict_types=1);
 namespace PrinsFrank\PhpStrictModels\Validation;
 
 use PrinsFrank\PhpStrictModels\Enum\Visibility;
+use PrinsFrank\PhpStrictModels\Model;
 use PrinsFrank\PhpStrictModels\Rule\Rule;
 use Reflection;
 use ReflectionClass;
 
 class ModelValidator
 {
+    /**
+     * @param ReflectionClass<Model> $reflectionClass
+     */
     public static function validateModel(ReflectionClass $reflectionClass): ValidationResult
     {
         $validationResult = new ValidationResult();
