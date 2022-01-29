@@ -18,9 +18,9 @@ class ModelValidator
                 continue;
             }
 
-            foreach ($reflectionClass->getAttributes() as $reflectionAttribute) {
+            foreach ($reflectionProperty->getAttributes() as $reflectionAttribute) {
                 if ($reflectionAttribute->newInstance() instanceof Rule) {
-                    $validationResult->addError('Public properties can\'t have validation rules, but a public property with name "' . $reflectionProperty->getName() . '" has rules.');
+                    $validationResult->addError('Public properties can\'t have validation rules, but a public property with name "' . $reflectionProperty->getName() . '" does.');
 
                     break;
                 }

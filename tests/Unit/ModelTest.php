@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace PrinsFrank\PhpStrictModels\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use PrinsFrank\PhpStrictModels\Exception\TypeException;
+use PrinsFrank\PhpStrictModels\Exception\InvalidModelException;
 use PrinsFrank\PhpStrictModels\Exception\ValidationFailedException;
-use PrinsFrank\PhpStrictModels\Exception\VisibilityException;
 use PrinsFrank\PhpStrictModels\Model;
 use PrinsFrank\PhpStrictModels\Exception\NonExistingPropertyException;
 use PrinsFrank\PhpStrictModels\Rule\Between;
+use PrinsFrank\PhpStrictModels\Rule\NotBlank;
 
 /**
  * @coversDefaultClass \PrinsFrank\PhpStrictModels\Model
@@ -19,12 +19,24 @@ class ModelTest extends TestCase
     /**
      * @covers ::__construct
      */
+    public function testsAllowsPublicPropertyWithoutRule(): void
+    {
+        new class extends Model {
+            public int $foo;
+        };
+        $this->addToAssertionCount(1);
+    }
+
+    /**
+     * @covers ::__construct
+     */
     public function testsThrowsExceptionOnPublicProperty(): void
     {
-        $this->expectException(VisibilityException::class);
-        $this->expectExceptionMessage('Model should not have public properties, but has "foo"');
+        $this->expectException(InvalidModelException::class);
+        $this->expectExceptionMessage('Model is invalid: "Public properties can\'t have validation rules, but a public property with name "foo" does."');
         /** @phpstan-ignore-next-line */
         new class extends Model {
+            #[Between(41, 43)]
             public int $foo;
         };
     }
@@ -34,11 +46,14 @@ class ModelTest extends TestCase
      */
     public function testsThrowsExceptionOnPublicProperties(): void
     {
-        $this->expectException(VisibilityException::class);
-        $this->expectExceptionMessage('Model should not have public properties, but has "foo,bar"');
+        $this->expectException(InvalidModelException::class);
+        $this->expectExceptionMessage('Model is invalid: "Public properties can\'t have validation rules, but a public property with name "foo" does.","Public properties can\'t have validation rules, but a public property with name "bar" does."');
         /** @phpstan-ignore-next-line */
         new class extends Model {
+            #[Between(41, 43)]
             public int $foo;
+
+            #[NotBlank]
             public string $bar;
             protected float $baz;
         };
@@ -64,21 +79,6 @@ class ModelTest extends TestCase
         $this->expectExceptionMessage('Property with name "foo" does not exist');
         /** @phpstan-ignore-next-line */
         $model->foo = 42;
-    }
-
-    /**
-     * @covers ::__set
-     */
-    public function testSetThrowsExceptionIfStrictAndNotSameType(): void
-    {
-        $model = new class extends Model {
-            protected int $foo;
-        };
-
-        $this->expectException(TypeException::class);
-        $this->expectExceptionMessage('Type of property with name "foo" is set to "int", "string" given');
-        /** @noinspection PhpStrictTypeCheckingInspection @phpstan-ignore-next-line */
-        $model->foo = 'bar';
     }
 
     /**
