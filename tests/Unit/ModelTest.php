@@ -21,6 +21,7 @@ class ModelTest extends TestCase
      */
     public function testsAllowsPublicPropertyWithoutRule(): void
     {
+        /** @phpstan-ignore-next-line as this a scenario we want to test */
         new class extends Model {
             public int $foo;
         };
