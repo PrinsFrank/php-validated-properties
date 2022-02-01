@@ -13,18 +13,20 @@ class LargerThanOrEquals implements Rule
 
     public function applicableToTypes(): array
     {
-        return [Type::float, Type::int, Type::array];
+        return [Type::float, Type::int, Type::array, Type::string];
     }
 
     /**
-     * @param int|float|mixed[] $value
+     * @param int|float|string|mixed[] $value
      */
     public function isValid(mixed $value): bool
     {
         if (is_array($value)) {
-            $nrOfItemsInArray = count($value);
+            return count($value) >= $this->largerThanOrEquals;
+        }
 
-            return $nrOfItemsInArray >= $this->largerThanOrEquals;
+        if (is_string($value)) {
+            return mb_strlen($value) >= $this->largerThanOrEquals;
         }
 
         return $value >= $this->largerThanOrEquals;
@@ -32,6 +34,6 @@ class LargerThanOrEquals implements Rule
 
     public function getMessage(): string
     {
-        return 'Should be larger than or equal to' . $this->largerThanOrEquals;
+        return 'Should be larger than or equal to ' . $this->largerThanOrEquals;
     }
 }

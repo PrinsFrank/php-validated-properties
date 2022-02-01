@@ -13,18 +13,20 @@ class LargerThan implements Rule
 
     public function applicableToTypes(): array
     {
-        return [Type::float, Type::int, Type::array];
+        return [Type::float, Type::int, Type::array, Type::string];
     }
 
     /**
-     * @param int|float|mixed[] $value
+     * @param int|float|string|mixed[] $value
      */
     public function isValid(mixed $value): bool
     {
         if (is_array($value)) {
-            $nrOfItemsInArray = count($value);
+            return count($value) > $this->largerThan;
+        }
 
-            return $nrOfItemsInArray > $this->largerThan;
+        if (is_string($value)) {
+            return mb_strlen($value) > $this->largerThan;
         }
 
         return $value > $this->largerThan;

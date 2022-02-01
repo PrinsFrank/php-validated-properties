@@ -13,11 +13,11 @@ class Between implements Rule
 
     public function applicableToTypes(): array
     {
-        return [Type::float, Type::int, Type::array];
+        return [Type::float, Type::int, Type::array, Type::string];
     }
 
     /**
-     * @param int|float|mixed[] $value
+     * @param int|float|string|mixed[] $value
      */
     public function isValid(mixed $value): bool
     {
@@ -25,6 +25,12 @@ class Between implements Rule
             $nrOfItemsInArray = count($value);
 
             return $nrOfItemsInArray >= $this->largerThanOrEquals && $nrOfItemsInArray <= $this->smallerThanOrEquals;
+        }
+
+        if (is_string($value)) {
+            $nrOfCharacters = mb_strlen($value);
+
+            return $nrOfCharacters >= $this->largerThanOrEquals && $nrOfCharacters <= $this->smallerThanOrEquals;
         }
 
         return $value >= $this->largerThanOrEquals && $value <= $this->smallerThanOrEquals;

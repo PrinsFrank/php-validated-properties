@@ -13,18 +13,20 @@ class SmallerThan implements Rule
 
     public function applicableToTypes(): array
     {
-        return [Type::float, Type::int, Type::array];
+        return [Type::float, Type::int, Type::array, Type::string];
     }
 
     /**
-     * @param int|float|mixed[] $value
+     * @param int|float|string|mixed[] $value
      */
     public function isValid(mixed $value): bool
     {
         if (is_array($value)) {
-            $nrOfItemsInArray = count($value);
+            return count($value) < $this->smallerThan;
+        }
 
-            return $nrOfItemsInArray < $this->smallerThan;
+        if (is_string($value)) {
+            return mb_strlen($value) < $this->smallerThan;
         }
 
         return $value < $this->smallerThan;
