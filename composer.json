@@ -1,6 +1,6 @@
 {
     "name": "prinsfrank/php-validated-properties",
-    "description": "Strict models for PHP",
+    "description": "Validated properties in PHP8.1 and above using attribute rules",
     "type": "library",
     "license": "MIT",
     "require": {
