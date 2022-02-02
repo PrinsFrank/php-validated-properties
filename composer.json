@@ -1,5 +1,5 @@
 {
-    "name": "prinsfrank/php-strict-models",
+    "name": "prinsfrank/php-validated-properties",
     "description": "Strict models for PHP",
     "type": "library",
     "license": "MIT",
