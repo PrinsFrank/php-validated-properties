@@ -70,6 +70,23 @@ class ModelTest extends TestCase
     }
 
     /**
+     * @covers ::__isset
+     */
+    public function testIsset(): void
+    {
+        /** @phpstan-ignore-next-line as we want to explicitly test this scenario */
+        $foo = new class extends Model {
+            public string $foo = '';
+            protected int $bar;
+            protected int $baz = 1;
+        };
+        static::assertTrue(isset($foo->foo));
+        static::assertFalse(isset($foo->bar));
+        static::assertTrue(isset($foo->baz));
+        static::assertFalse(isset($foo->boop));
+    }
+
+    /**
      * @covers ::__set
      */
     public function testSetThrowsExceptionWhenPropertyNonExisting(): void
