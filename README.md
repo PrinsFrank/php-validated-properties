@@ -32,7 +32,7 @@ When a property is set to a value that doesn't adhere to these rules, a Validati
 To get up and running, simply run;
 
 ```shell
-composer install prinsfrank/php-validated-properties
+composer require prinsfrank/php-validated-properties
 ```
 
 ## Creating a validated model 
