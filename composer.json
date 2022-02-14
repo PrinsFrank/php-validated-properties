@@ -18,8 +18,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "PrinsFrank\\PhpStrictModels\\Tests\\": "tests/",
-            "PrinsFrank\\PhpStrictModels\\Development\\": "development/"
+            "PrinsFrank\\PhpStrictModels\\Tests\\": "tests/"
         }
     },
     "scripts": {

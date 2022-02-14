@@ -87,8 +87,16 @@ Due [to how PHP works internally](https://www.php.net/manual/en/language.oop5.ov
 
 ## PHPStan support
 
-To let PHPStan understand this package and to enable it to prevent any errors that can be detected using static analysis, a PHPStan plugin is included in this package. To add it to your phpstan.neon, simply add the following line to your includes section:
+To let PHPStan understand this package and to enable it to prevent any errors that can be detected using static analysis, a PHPStan plugin is provided in ```prinsfrank/php-validated-properties-phpstan```. To add it to your phpstan.neon, simply run the command below;
+
+```
+composer require prinsfrank/php-validated-properties-phpstan --dev
+```
+
+And add the following line to your includes section in your phpstan.neon file:
+
 ```neon
 includes:
     - vendor/prinsfrank/php-validated-properties/development/PHPStan/extension.neon
 ```
+
