@@ -24,10 +24,5 @@
     },
     "scripts": {
         "fix": "vendor/bin/php-cs-fixer fix --allow-risky=yes"
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-main": "0.0.x-dev"
-        }
     }
 }
