@@ -4,4 +4,4 @@ parameters:
         - src
         - tests
 includes:
-    - development/PHPStan/extension.neon
+    - vendor/prinsfrank/php-validated-properties-phpstan/extension.neon
