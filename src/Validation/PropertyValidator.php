@@ -13,11 +13,11 @@ class PropertyValidator
         $validationResult = new ValidationResult();
         foreach ($reflectionProperty->getAttributes() as $attribute) {
             $attributeInstance = $attribute->newInstance();
-            if ($attributeInstance instanceof Rule === false) {
+            if (! $attributeInstance instanceof Rule) {
                 continue;
             }
 
-            if ($attributeInstance->isValid($value) === false) {
+            if (! $attributeInstance->isValid($value)) {
                 $validationResult->addError($attributeInstance->getMessage());
             }
         }
