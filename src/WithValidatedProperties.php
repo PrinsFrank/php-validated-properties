@@ -19,7 +19,7 @@ trait WithValidatedProperties
     public function __construct()
     {
         $validationResult = ModelValidator::validateModel(new ReflectionClass(static::class));
-        if ($validationResult->passes() === false) {
+        if (! $validationResult->passes()) {
             throw new InvalidModelException('Model is invalid: "' . implode('","', $validationResult->getErrors()) . '"');
         }
     }
@@ -36,12 +36,12 @@ trait WithValidatedProperties
      */
     public function __set(string $name, mixed $value): void
     {
-        if (property_exists($this, $name) === false) {
+        if (! property_exists($this, $name)) {
             throw new NonExistingPropertyException('Property with name "' . $name . '" does not exist');
         }
 
         $validationResult = PropertyValidator::validateProperty((new ReflectionClass(static::class))->getProperty($name), $value);
-        if ($validationResult->passes() === false) {
+        if (! $validationResult->passes()) {
             throw new ValidationException('Value "' . $value . '" for property "' . $name . '" is invalid: "' . implode('","', $validationResult->getErrors()) .  '"');
         }
 
