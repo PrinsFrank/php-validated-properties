@@ -27,6 +27,7 @@ return (new PhpCsFixer\Config())
         'single_blank_line_at_eof'               => true,
         'array_syntax'                           => ['syntax' => 'short'],
     ])
+    ->setRiskyAllowed(true)
     ->setFinder(
         (PhpCsFixer\Finder::create())
             ->exclude('vendor')
